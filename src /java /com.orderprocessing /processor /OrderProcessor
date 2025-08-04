@@ -1,0 +1,38 @@
+package com.orderprocessing.processor;
+
+import com.orderprocessing.model.Order;
+import com.orderprocessing.model.Item;
+import com.orderprocessing.discount.DiscountCalculator;
+import com.orderprocessing.receipt.ReceiptGenerator;
+import com.orderprocessing.receipt.ReceiptPrinter;
+import com.orderprocessing.notification.Notifier;
+
+public class OrderProcessor {
+    private DiscountCalculator discountCalculator;
+    private ReceiptGenerator receiptGenerator;
+    private ReceiptPrinter receiptPrinter;
+    private Notifier notifier;
+
+    public OrderProcessor(DiscountCalculator discountCalculator,
+                          ReceiptGenerator receiptGenerator,
+                          ReceiptPrinter receiptPrinter,
+                          Notifier notifier) {
+        this.discountCalculator = discountCalculator;
+        this.receiptGenerator = receiptGenerator;
+        this.receiptPrinter = receiptPrinter;
+        this.notifier = notifier;
+    }
+
+    public void processOrder(Order order) {
+        double totalPrice = 0;
+        for (Item item : order.getItems()) {
+            totalPrice += item.getPrice();
+        }
+
+        double discount = this.discountCalculator.discount(totalPrice);
+        StringBuilder receipt = this.receiptGenerator.generateReceipt(order, totalPrice, discount);
+
+        this.receiptPrinter.printReceipt(receipt);
+        this.notifier.send(order);
+    }
+}
