@@ -2,7 +2,7 @@
 
 A Java-based application demonstrating **SOLID principles** and **design patterns** through an order processing workflow with discount calculation, receipt management, and notification features.
 
-**Overview
+**Overview**
 
 The **Order Processing System** is designed to handle customer orders efficiently by:
 - Calculating discounts (Regular or Premium)
